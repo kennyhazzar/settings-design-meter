@@ -1,6 +1,10 @@
-﻿const Datastore = require('nedb-promise')
+﻿const Datastore = require('nedb')
+const nedbPromise = require('nedb-promise')
 
-const Feedback = new Datastore({ autoload: true, filename: 'data/Feedback.db' })
+const db = new Datastore({ autoload: true, filename: 'data/Feedback.db' })
+const Feedback = nedbPromise.fromInstance(db)
+
+const compactDb = () => db.persistence.compactDatafile()
 
 const isFeedbackValid = feedback => feedback.length === 4 ? true : false
 
@@ -20,15 +24,27 @@ const updateCurrentFeedback = newFeedback => {
     if (!isFeedbackValid(newFeedback)) {
         return false
     }
-    return Feedback.update({ isSelect: true }, { $set: { choices: newFeedback } })
+    Feedback.update({ isSelect: true }, { $set: { choices: newFeedback } })
+    compactDb()
 }
 
+const changeFeedback = idNewFeedback => {
+    Feedback.update(
+        { isSelect: true },
+        { $set: { isSelect: false } }
+    )
+    Feedback.update({ _id: idNewFeedback }, { $set: { isSelect: true } })
+    compactDb()
+}
+
+const removeFeedback = _id => Feedback.remove(_id)
 
 module.exports = {
-    isFeedbackValid,
-    addFeedback,
     getCurrentFeedback,
     getFeedback,
     getFeedbackOne,
-    updateCurrentFeedback
+    addFeedback,
+    updateCurrentFeedback,
+    changeFeedback,
+    removeFeedback
 }

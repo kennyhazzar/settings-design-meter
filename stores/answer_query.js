@@ -1,6 +1,10 @@
-﻿const Datastore = require('nedb-promise')
+﻿const Datastore = require('nedb')
+const nedbPromise = require('nedb-promise')
 
-const AnswerCbQuery = new Datastore({ filename: 'data/AnswerCbQuery.db', autoload: true })
+const db = new Datastore({ autoload: true, filename: 'data/AnswerCbQuery.db' })
+const AnswerCbQuery = nedbPromise.fromInstance(db)
+
+const compactDb = () => db.persistence.compactDatafile()
 
 const isAnswerCbQueryValid = answerCbQuery => answerCbQuery.length === 4 ? true : false
 
@@ -8,20 +12,35 @@ const getOneAnswerCbQuery = (query = {}) => AnswerCbQuery.findOne(query)
 
 const getAnswerCbQuery = (query = {}) => AnswerCbQuery.find(query)
 
-const getCurrentAnswerCbQuery = () => AnswerCbQuery.find({ isSelect = true })
+const getCurrentAnswerCbQuery = () => AnswerCbQuery.findOne({ isSelect: true })
 
 const addAnswerCbQuery = (answerCbQuery, isSelect = false) =>
     isAnswerCbQueryValid(answerCbQuery)
-        ? AnswerCbQuery.insert({ AnswerCbQuery, isSelect }) : false
+        ? AnswerCbQuery.insert({ AnswerCbQuery: answerCbQuery, isSelect }) : false
 
-const updateCurrentAnswerCbQuery = (answerCbQuery) =>
+const updateCurrentAnswerCbQuery = answerCbQuery => {
     isAnswerCbQueryValid(answerCbQuery)
-        ? AnswerCbQuery.update({ isSelect: true }, { $set: { answerCbQuery } }) : false
+    ? AnswerCbQuery.update({ isSelect: true }, { $set: { answerCbQuery } }) : false
+    compactDb()
+}
+
+const changeCurrentCbQuery = idNewCurrent => {
+    AnswerCbQuery.update(
+        { isSelect: true },
+        { $set: { isSelect: false } }
+    )
+    AnswerCbQuery.update({ _id: idNewCurrent }, { $set: { isSelect: true } })
+    compactDb()
+}
+
+const removeAnswerCbQuery = _id => AnswerCbQuery.remove(_id)
 
 module.exports = {
     getOneAnswerCbQuery,
     getAnswerCbQuery,
     getCurrentAnswerCbQuery,
     addAnswerCbQuery,
-    updateCurrentAnswerCbQuery
+    updateCurrentAnswerCbQuery,
+    changeCurrentCbQuery,
+    removeAnswerCbQuery
 }

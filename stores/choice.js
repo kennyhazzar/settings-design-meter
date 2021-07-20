@@ -1,12 +1,18 @@
-﻿const Datastore = require('nedb-promise')
+﻿const Datastore = require('nedb')
+const nedbPromise = require('nedb-promise')
 
-const Choice = new Datastore({ autoload: true, filename: 'data/Choice.db' })
 
-const getLength = choice => (JSON.stringify(choice).match(/callback_data/g)).length
+const db = new Datastore({ autoload: true, filename: 'data/Choice.db' })
+const Choice = nedbPromise.fromInstance(db)
+
+const compactDb = () => db.persistence.compactDatafile()
+
+const isChoiceValid = choice =>
+    (JSON.stringify(choice).match(/callback_data/g)).length === 4 ? true : false
 
 const addChoices = (choices, isSelect = false) => {
     const length = getLength(choices)
-    if (length > 4 || length < 4) {
+    if (!isChoiceValid(choices)) {
         return false
     }
     return Choice.insert({ choices, isSelect })
@@ -16,20 +22,33 @@ const getChoices = (query = {}) => Choice.find(query)
 
 const getCurrentChoices = () => Choice.findOne({ isSelect: true })
 
+const getChoicesOne = (query = {}) => Choice.findOne(query)
+
 const updateCurrentChoices = newChoices => {
-    const length = getLength(newChoices)
-    if (length > 4 || length < 4) {
+    if (!isChoiceValid(newChoices)) {
         return false
     }
-    return Choice.update({ isSelect: true }, { $set: { choices: newChoices } })
+    Choice.update({ isSelect: true }, { $set: { choices: newChoices } })
+    compactDb()
+}
+
+const changeCurrentChoice = idNewCurrent => {
+    Choice.update(
+        { isSelect: true },
+        { $set: { isSelect: false } }
+    )
+    Choice.update({ _id: idNewCurrent }, { $set: { isSelect: true } })
+    compactDb()
 }
 
 const removeChoices = (_id) => Choice.remove(_id)
 
 module.exports = {
-    addChoices,
     getChoices,
     getCurrentChoices,
+    getChoicesOne,
+    addChoices,
     updateCurrentChoices,
+    changeCurrentChoices,
     removeChoices
 }
