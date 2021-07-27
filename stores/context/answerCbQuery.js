@@ -1,7 +1,7 @@
 ﻿const Datastore = require('nedb')
 const nedbPromise = require('nedb-promise')
 
-const db = new Datastore({ autoload: true, filename: 'data/AnswerCbQuery.db' })
+const db = new Datastore({ autoload: true, filename: 'data/context/AnswerCbQuery.db' })
 const AnswerCbQuery = nedbPromise.fromInstance(db)
 
 const compactDb = () => db.persistence.compactDatafile()
@@ -20,7 +20,7 @@ const addAnswerCbQuery = (answerCbQuery, isSelect = false) =>
 
 const updateCurrentAnswerCbQuery = answerCbQuery => {
     isAnswerCbQueryValid(answerCbQuery)
-    ? AnswerCbQuery.update({ isSelect: true }, { $set: { answerCbQuery } }) : false
+        ? AnswerCbQuery.update({ isSelect: true }, { $set: { answerCbQuery } }) : false
     compactDb()
 }
 
@@ -33,7 +33,7 @@ const changeCurrentCbQuery = idNewCurrent => {
     compactDb()
 }
 
-const removeAnswerCbQuery = _id => AnswerCbQuery.remove(_id)
+const removeAnswerCbQuery = _id => AnswerCbQuery.remove({ _id })
 
 module.exports = {
     getOneAnswerCbQuery,

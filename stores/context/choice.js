@@ -2,7 +2,7 @@
 const nedbPromise = require('nedb-promise')
 
 
-const db = new Datastore({ autoload: true, filename: 'data/Choice.db' })
+const db = new Datastore({ autoload: true, filename: 'data/context/Choice.db' })
 const Choice = nedbPromise.fromInstance(db)
 
 const compactDb = () => db.persistence.compactDatafile()
@@ -11,7 +11,6 @@ const isChoiceValid = choice =>
     (JSON.stringify(choice).match(/callback_data/g)).length === 4 ? true : false
 
 const addChoices = (choices, isSelect = false) => {
-    const length = getLength(choices)
     if (!isChoiceValid(choices)) {
         return false
     }
@@ -32,7 +31,7 @@ const updateCurrentChoices = newChoices => {
     compactDb()
 }
 
-const changeCurrentChoice = idNewCurrent => {
+const changeCurrentChoices = idNewCurrent => {
     Choice.update(
         { isSelect: true },
         { $set: { isSelect: false } }
@@ -41,7 +40,7 @@ const changeCurrentChoice = idNewCurrent => {
     compactDb()
 }
 
-const removeChoices = (_id) => Choice.remove(_id)
+const removeChoices = (_id) => Choice.remove({ _id })
 
 module.exports = {
     getChoices,

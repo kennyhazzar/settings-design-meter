@@ -1,7 +1,7 @@
 ﻿const Datastore = require('nedb')
 const nedbPromise = require('nedb-promise')
 
-const db = new Datastore({ autoload: true, filename: 'data/Feedback.db' })
+const db = new Datastore({ autoload: true, filename: 'data/context/Feedback.db' })
 const Feedback = nedbPromise.fromInstance(db)
 
 const compactDb = () => db.persistence.compactDatafile()
@@ -37,7 +37,7 @@ const changeFeedback = idNewFeedback => {
     compactDb()
 }
 
-const removeFeedback = _id => Feedback.remove(_id)
+const removeFeedback = _id => Feedback.remove({ _id })
 
 module.exports = {
     getCurrentFeedback,
