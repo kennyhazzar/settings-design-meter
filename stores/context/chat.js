@@ -10,7 +10,7 @@ const getChatOne = (query = {}) => Chat.findOne(query)
 
 const getChat = (query = {}) => Chat.find(query)
 
-const addChat = (chatId) => Chat.insert({ chatId })
+const addChat = (chatId) => Chat.insert(chatId)
 
 const removeChat = (_id) => {
     Chat.remove({ _id })
