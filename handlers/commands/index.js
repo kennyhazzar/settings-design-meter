@@ -4,9 +4,9 @@ const commands = new Composer()
 
 const start = require('./start.js')
 const help = require('./help.js')
-const chat = require('./settings/chats.js')
+const chat = require('./settings/chat/chatAdd.js')
 
-commands.command('/chat', chat)
+commands.command('/chatAdd', chat)
 commands.start(start)
 commands.help(help)
 
