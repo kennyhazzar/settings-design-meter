@@ -9,10 +9,10 @@ const deleteStartHandler = async ctx => {
 
     if (commandInstance === '/deleteStart') {
 
-        ctx.reply(`Список шаблонов приветственного сообщения:\n(Текст, айди)\n
+        ctx.replyWithHTML(`Список шаблонов приветственного сообщения:\n(Текст, айди)\n
         ${start.length == 0 ? "Пусто\n" : start.map((item, index) => {
-            return "\n" + `${index + 1}. ${item.data}\n${item._id}\n`
-        }).join('')}\n\nДля удаления шаблона, введи /deleteStart <айди из списка>`)
+            return "\n" + `${index + 1}. ${item.data}\n<strong>${item._id}</strong>\n`
+        }).join('')}\n\nДля удаления шаблона, введи /deleteStart &lt;айди из списка&gt;`)
     } else {
         Start.removeStart(commandInstance)
         ctx.reply("Шаблон удален")
