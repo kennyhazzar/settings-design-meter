@@ -17,12 +17,12 @@ const getMessage = (query = {}) => Message.find(query)
 const getCurrentMessage = () => Message.findOne({ isSelect: true })
 
 const addMessage = (messageText, isSelect = false) =>
-    ismessageValid(messageText) ?
+    isMessageValid(messageText) ?
         Message.insert({ data: messageText, isSelect }) : null
 
 
 const updateCurrentmessage = (newMessageText) => {
-    ismessageValid(newMessageText)
+    isMessageValid(newMessageText)
         ? Message.update({ isSelect: true }, { $set: { data: newMessageText } }) : null
     compactDb()
 }
