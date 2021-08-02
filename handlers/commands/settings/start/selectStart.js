@@ -11,12 +11,12 @@ const selectStartHandler = async ctx => {
 
     if (commandInstance === '/selectStart') {
 
-        ctx.reply(`Список шаблонов приветственного сообщения:\n(Текст, айди)\n
+        ctx.replyWithHTML(`Список шаблонов приветственного сообщения:\n(Текст, айди)\n
         ${start.length == 0 ? "Пусто\n" : start.map((item, index) => {
-            return "\n" + `${index + 1}. ${item.data}\n${item._id}\n`
+            return "\n" + `${index + 1}. ${item.data}\n<strong>${item._id}</strong>\n`
         }).join('')}` + `${currentStart ? "\n\nВ данный момент выбран:\n\n" + currentStart.data + 
         "\n" + currentStart._id : "\n\nВ данный момент ничего не выбрано\n\n"}` +
-        "\n\nДля выбора шаблона, введи /selectStart <айди из списка>")
+        "\n\nДля выбора шаблона, введи /selectStart &lt;айди из списка&gt;")
     } else {
         Start.changeCurrentStart(commandInstance)
         ctx.reply("Шаблон выбран")
