@@ -2,11 +2,12 @@
 
 const middlewares = new Composer()
 
-const photoHandler = require('./photo.js')
-const addUpdate = require('./addUpdate.js')
-const messageHandler = require('./messageText.js')
-middlewares.on('photo', photoHandler)
-middlewares.use(addUpdate)
-middlewares.on('text', messageHandler)
+middlewares.on('photo', require('./photo.js'))
+
+middlewares.use(require('./addUpdate.js'))
+
+middlewares.on('text', require('./messageText.js'))
+
+middlewares.on('sticker', require('./stickerxd.js'))
 
 module.exports = middlewares
