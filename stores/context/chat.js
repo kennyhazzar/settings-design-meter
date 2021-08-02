@@ -10,7 +10,12 @@ const getChatOne = (query = {}) => Chat.findOne(query)
 
 const getChat = (query = {}) => Chat.find(query)
 
-const addChat = (chatId) => Chat.insert(chatId)
+const addChat = (chat, chatId, isInclude = false) => Chat.insert({ chat: chat, isInclude, chatId })
+
+const removeChatByChatId = (query = {}) => {
+    Chat.remove(query)
+    compactDb()
+}
 
 const removeChat = (_id) => {
     Chat.remove({ _id })
@@ -21,5 +26,6 @@ module.exports = {
     getChat,
     getChatOne,
     addChat,
-    removeChat
+    removeChat,
+    removeChatByChatId
 }
