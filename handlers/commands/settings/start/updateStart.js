@@ -6,7 +6,7 @@ const updateStartHandler = async ctx => {
     const commandInstance = userMessage.substring(userMessage.search(' '), userMessage.length).trim()
     if (commandInstance === '/updateStart') {
         const start = await Start.getCurrentStart()
-        ctx.reply("Для обновления текущего приветственного сообщения, введи /updateStart <Текст сообщения>" +
+        ctx.reply("Для обновления текущего приветственного сообщения, введи\n\n/updateStart <Текст сообщения>" +
             "\n\nТекущее сообщение:\n" + (start?.data ? start.data : "Не выбрано"))
     } else {
         const start = await Start.getCurrentStart()
