@@ -8,17 +8,22 @@ const chatSettingsHandler = async ctx => {
     const commandInstance = userMessage.substring(userMessage.search(' '), userMessage.length).trim()
 
     const chatIsInclude = await Chat.getChat({ isInclude: true })
-    console.log(chatIsInclude)
     const chatIsNotInclude = await Chat.getChat({ isInclude: false })
-    console.log(chatIsNotInclude)
 
-    if (commandInstance) {
-        ctx.reply(`Активные чаты:\n${ chatIsInclude.length == 0 ? "Пусто\n" : chatIsInclude.map((item, index) => {
-            return `${index + 1}. ${item.chatId}\n` }).join('')
-        }\nНеактивные чаты:\n${ chatIsNotInclude.length == 0 ? "Пусто\n" : chatIsNotInclude.map((item, index) => {
-            return `${index + 1}. ${item.chatId}\n` }).join('')}` + 
-            "\nДля добавления чатов введите addChat <айди чата из этого списка>")
+    if (commandInstance === '/chatAdd') {
+        ctx.reply(`Активные чаты:\n${chatIsInclude.length == 0 ? "Пусто\n" : "(Название, айди)\n"
+            + chatIsInclude.map((item, index) => {
+                return `${index + 1}. ${item.chat.chat.title}, ${item.chat.chat.id}\n`
+            }).join('')
+            }\nНеактивные чаты:\n${chatIsNotInclude.length == 0 ? "Пусто\n" : "(Название, айди)\n"
+                + chatIsNotInclude.map((item, index) => {
+                    return `${index + 1}. ${item.chat.chat.id}\n`
+                }).join('')}` +
+            "\nДля добавления чатов введите addChat <айди чата из неактивного списка>")
+    } else {
+        ctx.reply('абибу')
     }
+
 
 }
 
