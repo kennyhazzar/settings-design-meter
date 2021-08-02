@@ -1,9 +1,12 @@
 ﻿const Start = require('../../../../stores/context/start.js')
 
 const updateStartHandler = async ctx => {
+    if (ctx.chat.type !== 'private') return null
+
     var userMessage = ctx.message.text
 
     const commandInstance = userMessage.substring(userMessage.search(' '), userMessage.length).trim()
+    
     if (commandInstance === '/updateStart') {
         const start = await Start.getCurrentStart()
         ctx.reply("Для обновления текущего приветственного сообщения, введи\n\n/updateStart <Текст сообщения>" +

@@ -1,6 +1,8 @@
 ﻿const Start = require('../../../../stores/context/start.js')
 
 const selectStartHandler = async ctx => {
+    if (ctx.chat.type !== 'private') return null
+
     var userMessage = ctx.message.text
 
     const start = await Start.getStart()

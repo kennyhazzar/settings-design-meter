@@ -7,6 +7,8 @@
 ]
 
 const startHelpHandler = ctx => {
+    if (ctx.chat.type !== 'private') return null
+
     ctx.reply("Привет! Данной командой ты имеешь возможность изменить приветственное сообщение!\n" +
         "\nЧтобы узнать, как пользоваться командой, просто воспользуйся ей без параметров.\n" +
         "\n\nСписок команд:\n" + `${commandString.map((item, index) => {
