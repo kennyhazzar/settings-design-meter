@@ -8,6 +8,8 @@ const chat = require('./settings/chat/chatAdd.js')
 
 commands.use(require('./settings/start/index'))
 
+commands.use(require('./settings/text/index'))
+
 commands.command('/chatAdd', chat)
 
 commands.start(start)
