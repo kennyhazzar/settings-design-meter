@@ -1,11 +1,6 @@
 ﻿const bot = require('./bot')
 
-bot.use(
-    require('./handlers/commands'),
-    require('./handlers/middlewares')
-)
-
-// bot.middleware()
+bot.use(require('./handlers'))
 
 try {
     bot.launch()
