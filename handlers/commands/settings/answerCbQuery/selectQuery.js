@@ -13,8 +13,8 @@ const selectQueryHandler = async ctx => {
 
     if (commandInstance === '/selectQuery') {
 
-        ctx.replyWithHTML(`Список шаблонов приветственного сообщения:\n(Текст, айди)\n
-        ${query.length == 0 ? "Пусто\n" : query.map((item, index) => {
+        ctx.replyWithHTML(`Список шаблонов уведомлений при нажатии на inline-клавиатуру:\n(Текст, айди)\n
+        ${query.length == 0 ? "Пусто\n" : query.map(item => {
             return "\n" + `${item.query.map((queryPart) => { return `\n${queryPart}` }).join('')}\n<strong>${item._id}</strong>\n`
         }).join('')}` + `${currentQuery ? "\n\nВ данный момент выбран:\n" + currentQuery.query.map((queryPart) => { return `\n${queryPart}` }).join('') +
             "\n" + `<strong>${currentQuery._id}</strong>` : "\n\nВ данный момент ничего не выбрано\n\n"}` +
