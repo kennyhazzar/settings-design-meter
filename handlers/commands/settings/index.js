@@ -8,4 +8,6 @@ settings.use(require('./start/index'))
 
 settings.use(require('./text/index'))
 
+settings.use(require('./answerCbQuery/index'))
+
 module.exports = settings
