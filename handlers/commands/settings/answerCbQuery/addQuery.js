@@ -1,19 +1,20 @@
 ﻿const AnswerQuery = require('../../../../stores/context/answerCbQuery.js')
 
-const { Composer,  Scenes: { BaseScene, Stage }, Markup, Scenes  } = require('telegraf')
+const { Composer, Scenes: { BaseScene, Stage }, Markup, Scenes } = require('telegraf')
 
 const exitKeyboard = Markup.keyboard(['Прервать']).oneTime().resize(true)
 const removeKeyboard = Markup.removeKeyboard()
 
-const settingScene = new BaseScene('settingScene')
+const settingAddQueryScene = new BaseScene('settingAddQueryScene')
 
 var templateCount = 0
 
-settingScene.enter(ctx => {
+settingAddQueryScene.enter(ctx => {
     ctx.session.template = []
-    ctx.reply("Настройка коллбек-ответа", exitKeyboard)
+    ctx.reply("Данной командой вы можете изменить текст уведомления, которое" +
+        "будет отображаться при нажатии на inline-клавиатуру", exitKeyboard)
 })
-settingScene.on("text", ctx => {
+settingAddQueryScene.on("text", ctx => {
 
     const text = ctx.update.message.text
 
@@ -21,7 +22,7 @@ settingScene.on("text", ctx => {
 
     if (text == "Прервать") return ctx.scene.leave()
     if (templateCount < 4) {
-        ctx.reply(`Осталось ${templateCount} из 4`)
+        ctx.reply(`Добавлено ${templateCount} из 4`)
         return ctx.session.template.push(text)
     }
     ctx.session.template.push(text)
@@ -29,7 +30,7 @@ settingScene.on("text", ctx => {
     return ctx.scene.leave()
 })
 
-settingScene.leave(ctx => {
+settingAddQueryScene.leave(ctx => {
     templateCount = 0
 
     if (ctx.session.template.length != 4) return ctx.reply('Ошибка сохранения - шаблон не из 4 слов')
@@ -39,12 +40,12 @@ settingScene.leave(ctx => {
     }).join('')}\nДля выбора шаблона воспользуйтесь командой /selectQuery`)
 }, removeKeyboard)
 
-const stage = new Stage([settingScene])
+const stage = new Stage([settingAddQueryScene])
 
-const answerCbQueryComposer = new Composer()
+const addAnswerCbQueryComposer = new Composer()
 
-answerCbQueryComposer.use(stage.middleware())
+addAnswerCbQueryComposer.use(stage.middleware())
 
-answerCbQueryComposer.command('addQuery', ctx => ctx.scene.enter("settingScene"))
+addAnswerCbQueryComposer.command('addQuery', ctx => ctx.scene.enter("settingAddQueryScene"))
 
-module.exports = answerCbQueryComposer
+module.exports = addAnswerCbQueryComposer
