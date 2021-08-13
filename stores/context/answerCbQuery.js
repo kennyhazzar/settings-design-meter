@@ -16,7 +16,7 @@ const getCurrentAnswerCbQuery = () => AnswerCbQuery.findOne({ isSelect: true })
 
 const addAnswerCbQuery = (answerCbQuery, isSelect = false) =>
     isAnswerCbQueryValid(answerCbQuery)
-        ? AnswerCbQuery.insert({ AnswerCbQuery: answerCbQuery, isSelect }) : false
+        ? AnswerCbQuery.insert({ query: answerCbQuery, isSelect }) : false
 
 const updateCurrentAnswerCbQuery = answerCbQuery => {
     isAnswerCbQueryValid(answerCbQuery)
