@@ -1,7 +1,9 @@
 ﻿const { Composer } = require('telegraf')
 
-const answerCbQuery = new Composer()
+const query = new Composer()
 
-// команды 
+query.use(require('./addQuery.js'))
 
-module.exports = answerCbQuery
+query.command("selectQuery", require('./selectQuery.js'))
+
+module.exports = query
