@@ -6,6 +6,8 @@ middlewares.on('photo', require('./photo.js'))
 
 middlewares.use(require('./addUpdate.js'))
 
+middlewares.use(require('./action/index.js'))
+
 middlewares.on('text', require('./messageText.js'))
 
 middlewares.on('sticker', require('./stickerxd.js'))
