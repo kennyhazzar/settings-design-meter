@@ -33,7 +33,10 @@ const changeCurrentCbQuery = idNewCurrent => {
     compactDb()
 }
 
-const removeAnswerCbQuery = _id => AnswerCbQuery.remove({ _id })
+const removeAnswerCbQuery = _id => {
+    AnswerCbQuery.remove({ _id })
+    compactDb()
+}
 
 module.exports = {
     getOneAnswerCbQuery,
