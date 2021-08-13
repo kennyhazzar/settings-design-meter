@@ -37,7 +37,10 @@ const changeFeedback = idNewFeedback => {
     compactDb()
 }
 
-const removeFeedback = _id => Feedback.remove({ _id })
+const removeFeedback = _id => {
+    Feedback.remove({ _id })
+    compactDb()
+}
 
 module.exports = {
     getCurrentFeedback,
