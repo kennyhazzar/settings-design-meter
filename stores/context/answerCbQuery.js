@@ -20,7 +20,7 @@ const addAnswerCbQuery = (answerCbQuery, isSelect = false) =>
 
 const updateCurrentAnswerCbQuery = answerCbQuery => {
     isAnswerCbQueryValid(answerCbQuery)
-        ? AnswerCbQuery.update({ isSelect: true }, { $set: { answerCbQuery } }) : false
+        ? AnswerCbQuery.update({ isSelect: true }, { $set: { query: answerCbQuery } }) : false
     compactDb()
 }
 
