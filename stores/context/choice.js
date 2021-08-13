@@ -40,7 +40,10 @@ const changeCurrentChoices = idNewCurrent => {
     compactDb()
 }
 
-const removeChoices = (_id) => Choice.remove({ _id })
+const removeChoices = (_id) => {
+    Choice.remove({ _id })
+    compactDb()
+}
 
 module.exports = {
     getChoices,
