@@ -23,7 +23,7 @@ const getMessageOne = (query = {}) => Message.findOne(query)
 
 const getMessage = (query = {}) => Message.find(query)
 
-const pushMessage = context => Message.insert({ context })
+const pushMessage = (context, messageId)=> Message.insert({ context, messageId })
 
 const removeMessageDataById = messageId => {
     Message.remove({ messageId })
