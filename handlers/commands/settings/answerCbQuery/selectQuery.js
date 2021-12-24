@@ -15,8 +15,8 @@ const selectQueryHandler = async ctx => {
 
         ctx.replyWithHTML(`Список шаблонов уведомлений при нажатии на inline-клавиатуру:\n(Текст, айди)\n
         ${query.length == 0 ? "Пусто\n" : query.map(item => {
-            return "\n" + `${item.query.map((queryPart) => { return `\n${queryPart}` }).join('')}\n<strong>${item._id}</strong>\n`
-        }).join('')}` + `${currentQuery ? "\n\nВ данный момент выбран:\n" + currentQuery.query.map((queryPart) => { return `\n${queryPart}` }).join('') +
+            return "\n" + `${item.query.map((queryPart) => { return `\n${queryPart.text}` }).join('')}\n<strong>${item._id}</strong>\n`
+        }).join('')}` + `${currentQuery ? "\n\nВ данный момент выбран:\n" + currentQuery.query.map((queryPart) => { return `\n${queryPart.text}` }).join('') +
             "\n" + `<strong>${currentQuery._id}</strong>` : "\n\nВ данный момент ничего не выбрано\n\n"}` +
             "\n\nДля выбора шаблона, введи /selectQuery &lt;айди из списка&gt;")
     } else {

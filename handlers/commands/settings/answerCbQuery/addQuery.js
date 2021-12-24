@@ -1,4 +1,6 @@
-﻿const AnswerQuery = require('../../../../stores/context/answerCbQuery.js')
+﻿const { getCallbackData } = require('../../../../helpers')
+
+const AnswerQuery = require('../../../../stores/context/answerCbQuery.js')
 
 const { Composer, Scenes: { BaseScene, Stage }, Markup, Scenes } = require('telegraf')
 
@@ -23,9 +25,9 @@ settingAddQueryScene.on("text", ctx => {
     if (text == "Прервать") return ctx.scene.leave()
     if (templateCount < 4) {
         ctx.reply(`Добавлено ${templateCount} из 4`)
-        return ctx.session.template.push(text)
+        return ctx.session.template.push({ text: text, callback_data: getCallbackData(templateCount) })
     }
-    ctx.session.template.push(text)
+    ctx.session.template.push({ text: text, callback_data: getCallbackData(templateCount) })
     ctx.reply(`Осталось ${templateCount} из 4`)
     return ctx.scene.leave()
 })
@@ -36,7 +38,7 @@ settingAddQueryScene.leave(ctx => {
     if (ctx.session.template.length != 4) return ctx.reply('Ошибка сохранения - шаблон не из 4 слов')
     AnswerQuery.addAnswerCbQuery(ctx.session.template)
     ctx.reply(`Сохраненный шаблон:\n${ctx.session.template.map((item, index) => {
-        return `${index + 1}. ${item}\n`
+        return `${index + 1}. ${item.text}\n`
     }).join('')}\nДля выбора шаблона воспользуйтесь командой /selectQuery`)
 }, removeKeyboard)
 
