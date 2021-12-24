@@ -1,17 +1,18 @@
 ﻿const { pushMessage } = require('../../stores/logs/messageUser.js')
 const { getChat } = require('../../stores/context/chat.js')
-const { getCurrentChoices } = require('../../stores/context/choice.js')
+// const { getCurrentChoices } = require('../../stores/context/choice.js')
+const { getOneAnswerCbQuery } = require('../../stores/context/answerCbQuery.js')
 
 const photoHandler = async (ctx, next) => {
 
     if (ctx.chat.type !== 'private') return null
 
-    const inline = await getCurrentChoices()
+    const inline = await getOneAnswerCbQuery({ isSelect: true })
 
     if (!inline) {
         return ctx.reply("Бот не настроен, обратитесь к администратору (клавиатура)")
     }
-
+    
     const chat = await getChat({ isInclude: true })
 
     if (chat.length === 0 || !chat) {
@@ -30,7 +31,7 @@ const photoHandler = async (ctx, next) => {
             )
             await ctx.telegram.sendMessage(chatId, `Макет от @${ctx.chat.username}!\nНомер: ${ctx.message.message_id}`, {
                 reply_markup: {
-                    "inline_keyboard": inline.choices,
+                    "inline_keyboard": [[...inline.query]],
                     force_reply: true,
                 },
             })
