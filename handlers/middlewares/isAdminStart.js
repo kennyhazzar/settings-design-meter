@@ -2,6 +2,8 @@
 
 const isAdminStart = async (ctx, next) => {
 
+    if (ctx.chat.type !== 'private') return null
+
     const admins = await getAdmin()
 
     if (admins.length == 0) {
